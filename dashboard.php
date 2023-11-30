@@ -256,16 +256,44 @@
                 <div class="col-sm-10 col-md-7 col-lg-4">
                     <div class="dashboard-widget mb-30 mb-lg-0">
                         <div class="user">
-                            <div class="thumb-area">
+                        <div class="thumb-area">
+                            <form class="dash-pro-body" action="Server/updateimage.php" name="imgform" id="imgform" method="post">
                                 <div class="thumb">
-                                    <img src="assets/images/dashboard/user.png" alt="user">
+                                    <img src="<?php echo $image_src; ?>" alt="user">
                                 </div>
-                                <label for="profile-pic" class="profile-pic-edit"><i class="flaticon-pencil"></i></label>
-                                <input type="file" id="profile-pic" class="d-none">
+                                <label for="pic" class="profile-pic-edit" onclick="triggerFileInput()"><i class="flaticon-pencil"></i></label>
+                                <input class="d-none" type="file" name="pic" id="pic" onchange="submitForm()">
+                            </form>
+                            <script>
+                                function submitForm() {
+                                    var form = document.getElementById("imgform");
+                                    var formData = new FormData(form);
+
+                                    fetch('Server/updateimage.php', {
+                                        method: 'POST',
+                                        body: formData
+                                    })
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        console.log(data);
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                                }
+
+                                function triggerFileInput(event) {
+                                    event.stopPropagation();
+                                    document.getElementById("pic").click();
+                                }
+                            </script>
                             </div>
                             <div class="content">
-                                <h5 class="title"><a href="#0">Percy Reed</a></h5>
-                                <span class="username"><a href="https://pixner.net/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="402a2f282e00272d21292c6e232f2d">[email&#160;protected]</a></span>
+                                <h5 class="title"><a href="#0"><?php echo $user_data['name'].' '.$user_data['surname']; ?></a></h5>
+                                <span class="header">
+                                    <!--<label for="score">Score :</label>-->
+                                    <input type="text" name="score" id="score" value="<?php echo 'Score : '.$user_data['score']; ?>" maxlength="2" disabled />
+                                </span>
                             </div>
                         </div>
                         <ul class="dashboard-menu">
@@ -305,8 +333,22 @@
                                         <img src="assets/images/dashboard/01.png" alt="dashboard">
                                     </div>
                                     <div class="content">
-                                        <h2 class="title"><span class="counter">80</span></h2>
-                                        <h6 class="info">Active Bids</h6>
+                                        <?php
+                                            $mysqli = require __DIR__ . "/Server/database.php";
+
+                                            $user_id=$_SESSION['user_id'];
+                                        
+                                            $query = "SELECT  COUNT(items.name) AS total, items.name AS name, items.preview AS preview FROM items JOIN auction ON items.id = auction.itemid JOIN users ON users.id = auction.userid WHERE users.id = $user_id";
+                                            
+                                            $result = mysqli_query($mysqli, $query);
+
+                                            $row = mysqli_fetch_assoc($result);
+
+                                            echo "<h2 class='title'><span class='counter'>".$row['total']."</span></h2>";
+
+                                            mysqli_close($mysqli);
+                                        ?>
+                                        <h6 class="info">Active Auctions</h6>
                                     </div>
                                 </div>
                             </div>
@@ -316,8 +358,22 @@
                                         <img src="assets/images/dashboard/02.png" alt="dashboard">
                                     </div>
                                     <div class="content">
-                                        <h2 class="title"><span class="counter">15</span></h2>
-                                        <h6 class="info">Items Won</h6>
+                                        <?php
+                                            $mysqli = require __DIR__ . "/Server/database.php";
+
+                                            $user_id=$_SESSION['user_id'];
+                                        
+                                            $query = "SELECT  COUNT(items.name) AS total, items.name AS name, items.preview AS preview FROM items JOIN auction ON items.id = auction.itemid JOIN users ON users.id = auction.userid WHERE users.id = $user_id";
+                                            
+                                            $result = mysqli_query($mysqli, $query);
+
+                                            $row = mysqli_fetch_assoc($result);
+
+                                            echo "<h2 class='title'><span class='counter'>".$row['total']."</span></h2>";
+
+                                            mysqli_close($mysqli);
+                                        ?>
+                                        <h6 class="info">Auctions Created</h6>
                                     </div>
                                 </div>
                             </div>

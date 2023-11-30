@@ -465,9 +465,7 @@
                 </div>
                 <div class="right-side cl-white">
                     <div class="section-header mb-0">
-                        <h3 class="title mt-0">ALREADY HAVE AN ACCOUNT?</h3>
-                        <p>Log in and go to your Dashboard.</p>
-                        <a href="sign-in.php" class="custom-button transparent">Login</a>
+
                     </div>
                 </div>
             </div>

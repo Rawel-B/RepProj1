@@ -15,7 +15,7 @@
         
         $user = $result->fetch_assoc();
         
-        if ($user) {
+        if ($user && (!empty($_POST["email"])&&!empty($_POST["password"]))) {
             
             if (password_verify($_POST["password"], $user["password"])) {
                 
@@ -308,7 +308,7 @@
                     <div class="or">
                         <span>Or</span>
                     </div>
-                    <form class="login-form" method="post">
+                    <form class="login-form" method="post" name="signinform" id="signinform">
                         <div class="form-group col-md-6">
                             <?php if ($is_invalid): ?>
                                 <em style="color: red;font-size: 14px;font-weight: bold">Check Your Credentials .</em>
@@ -324,12 +324,37 @@
                             <span class="pass-type"><i class="fas fa-eye"></i></span>
                         </div>
                         <div class="form-group">
-                            <a href="#0">Forgot Password?</a>
+                        <a href="#" onclick="forgotPassword()" id="forgotPasswordLink">Forgot Password</a>
                         </div>
                         <div class="form-group mb-0">
                             <button type="submit" class="custom-button">LOG IN</button>
                         </div>
                     </form>
+                    <script>
+                        function forgotPassword() {
+                                var email = $("input[name='email']").val();
+
+                                if (!email || !email.trim() || !isValidEmail(email)) {
+                                    alert("Invalid Email Format");
+                                } else {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "Server/forgotpassword.php",
+                                        data: { email: email },
+                                        success: function (response) {
+                                            alert(response);
+                                        },
+                                        error: function () {
+                                            alert("Error occurred");
+                                        }
+                                    });
+                                }
+                            }
+
+                            function isValidEmail(email) {
+                                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                            }
+                    </script>
                 </div>
                 <div class="right-side cl-white">
                     <div class="section-header mb-0">

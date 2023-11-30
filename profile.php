@@ -26,6 +26,9 @@
         }
         $stmt->close();
         $mysqli->close();
+    }else
+    {
+        header("Location: error.php");
     }
 ?>
 <!-- navbar profile -->
@@ -346,7 +349,7 @@
                                         <div class="info-name">National ID</div>
                                         <div class="info-value">
                                             <input type="text" class="view-mode1" value="<?php echo $user_data['cin']; ?>" disabled>
-                                            <div><input class="edit-mode1" type="text" name="cin" id="cin" style="display: none;" required></div>
+                                            <div><input class="edit-mode1" type="text" name="cin" id="cin" style="display: none;" value="<?php echo $user_data['cin'];?>" required></div>
                                         </div>
                                     </li>
                                     <li>

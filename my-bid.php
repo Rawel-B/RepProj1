@@ -353,18 +353,12 @@
                                 <?php
                                     $mysqli = require __DIR__ . "/Server/database.php";
 
-                                    $query = "SELECT * FROM items";
+                                    $user_id=$_SESSION['user_id'];
+
+                                    $query = "SELECT items.name AS name, items.preview AS preview FROM items JOIN auction ON items.id = auction.itemid JOIN users ON users.id = auction.userid WHERE users.id = $user_id";
+                                    
                                     $result = mysqli_query($mysqli, $query);
-
-                                    /*if ($result->num_rows > 0)
-                                    {
-                                        $item_data = $result->fetch_assoc();
-                                        $image_name = $item_data["preview"];
-                                        $image_src = "upload/" . $image_name;
-                                    } else {
-                                        echo "User not found!";
-                                    }*/
-
+                                    
                                     while ($row = mysqli_fetch_assoc($result)){
                                         echo '<div class="col-sm-10 col-md-6 col-lg-4">';
                                         echo '<div class="auction-item-2">';
